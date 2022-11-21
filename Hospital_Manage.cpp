@@ -25,6 +25,18 @@ class Formality{
     }
 };
 
+class Bed{
+    int bed_num;
+};
+
+class Medicine{
+
+};
+
+class Department{
+    
+};
+
 class admitForm{
     string name;
     int age;
