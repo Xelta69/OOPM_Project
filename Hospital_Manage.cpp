@@ -3,16 +3,13 @@
 #include <string>
 using namespace std;
 
-class Hospital{
+class Formality{
     
-};
-
-class Formality : public Hospital{
+    private:
     string name;
     int age;
     
     public:
-    
     void ask_name(){
         cout<<"What is your name? ";
         cin>>name;
@@ -21,7 +18,17 @@ class Formality : public Hospital{
         cout<<"What is your age? ";
         cin>>age;
     }
-    
+}
+
+class Doctors{
+    string doc_list[7] = {"Dr.Ahuja","Dr.Singh","Dr.Patel",
+                            "Dr.Khan", "Dr.Saxena","Dr.Nagraj",
+                            "Dr.Gulati"};
+    int i = 0;
+    protected:
+    void id_info(){
+        
+    }
 }
 
 int main() {
