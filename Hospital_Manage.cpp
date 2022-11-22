@@ -9,13 +9,27 @@
 
 using namespace std;
 
-class Formality{
+class Reception{
     
     private:
     string name;
     int age;
     
     public:
+    Reception(){
+        time_t t; // t passed as argument in function time()
+        struct tm * tt; // decalring variable for localtime()
+        time (&t); //passing argument to time()
+        tt = localtime(&t);
+
+        if(tt->tm_hour < 12 && tt->tm_hour >= 5)
+            cout<<"Good Morning!!!\nHow may I help you?"<<endl;
+        else if(tt->tm_hour < 5 && tt->tm_hour >= 17)
+            cout<<"Good Evening!!!\nHow may I help you?"<<endl;
+        else if(tt->tm_hour < 17 && tt->tm_hour >= 12)
+            cout<<"Good Afteroon!!!\nHow may I help you?"<<endl;
+
+    }
     void ask_name(){
         cout<<"What is your name? ";
         cin>>name;
@@ -57,15 +71,51 @@ class Bed{
 
 };
 
-class Medicine{
+class medicineInfo{
+    vector<string> name = {"Forte Tablets", "Aspirin", "Ditropan XL", "Eytazox",
+                            "Motrin", "Exelon"};
 
+    public:
+    medicineInfo(){   }
 };
 
-class Department{
+class Medicine: public medicineInfo{
+    public:
+    Medicine(){
+        // medicineInfo path_1()
+    }
+};
+
+class departmentInfo{
+    protected:
+    string name;
+    vector <int> doc_IDs;
+    vector <int> med_IDs;
     
+    public:
+    departmentInfo(){ }
+    departmentInfo(string dep_name, int doc, int med){
+        name = dep_name;
+        doc_IDs.push_back(doc);
+        med_IDs.push_back(med);
+    }
+    departmentInfo(string dep_name, int doc){
+        name = dep_name;
+        doc_IDs.push_back(doc);
+    }
+};
+
+class Department : public departmentInfo{
+    public:
+    Department(){
+        departmentInfo Path("Pathology", 2, 0), Cardio("Cardiology", 4, 1);
+        departmentInfo Uro("Urology", 0, 2), Med("Medicine", 3), Opt("Optics", 1, 3);
+        departmentInfo Dent("Dentistry", 6, 4), Neu("Neurology", 5, 5);
+    }
 };
 
 class admitForm{
+
     string name;
     int age;
     string phone_number;
@@ -132,8 +182,7 @@ class admitForm{
 };
 
 class Doctors{
-    
-   
+
     vector <string> doc_list {"Dr.Ahuja","Dr.Singh","Dr.Patel",
                             "Dr.Khan", "Dr.Saxena","Dr.Nagraj",
                             "Dr.Gulati"};
@@ -142,9 +191,7 @@ class Doctors{
     
     protected:
     
-    void add_doc(string S){
-        doc_list.push_back(S);
-    }
+    
     void get_doc(){
         for(int i = 0; i < doc_list.size(); i++){
             try{
@@ -185,6 +232,9 @@ class Doctors{
             get_doc();
             cout<<"\n";
         }
+    }
+    void add_doc(string S){
+        doc_list.push_back(S);
     }
 };
 
