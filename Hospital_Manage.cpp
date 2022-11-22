@@ -14,6 +14,12 @@ class Reception{
     private:
     string name;
     int age;
+    char choice = 'X';
+    int key;
+
+    string user_options = "Press 1 - For Patient Admit Details\n"
+                          "Press 2 - For Medicine Details\n"
+                          "Press 3 - For Doctor Appointment\n";
     
     public:
     Reception(){
@@ -29,15 +35,37 @@ class Reception{
         else if(tt->tm_hour < 17 && tt->tm_hour >= 12)
             cout<<"Good Afteroon!!!\nHow may I help you?"<<endl;
 
+        ask_position();
+        if(toupper(choice) == 'C'){
+            user_info();
+        }
+        else if(toupper(choice) == 'H')
+            managment();
+
     }
-    void ask_name(){
-        cout<<"What is your name? ";
-        cin>>name;
+    char ask_position(){
+        while (toupper(choice) != 'C' || toupper(choice) != 'H')
+            cout<<"Are you Customer(Press C) or Hospital Management(Press H)";
+            cin>>choice;
+
+            if(toupper(choice) != 'C' || toupper(choice) != 'H'){
+                cout<<"Wrong Input\nTry Again!\n"<<endl;
+            } 
     }
-    void ask_age(){
-        cout<<"What is your age? ";
-        cin>>age;
+
+    int managment(){
+        int pass;
+        cout<<"Give Pin: ";
+        cin>>pass;
+
+        // if()
+
     }
+
+    void user_info(){
+
+    }
+    
 };
 
 class Bed{
