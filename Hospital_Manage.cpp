@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <vector>
 #include <exception>
+#include<cctype>
 
 using namespace std;
 
@@ -27,6 +28,33 @@ class Formality{
 
 class Bed{
     int bed_num;
+    int bed_avail;
+    public:
+    
+    Bed(void){
+        srand(5);
+        bed_num = rand() % (100 + 1);
+    }
+
+    void bed_status(){
+        if(bed_num > 0 && bed_num < 50){
+            cout<<"Many beds are available."<<endl;
+            bed_avail = 1;
+        }
+        else if(bed_num >= 50 && bed_num < 100){
+            cout<<"Few beds are available."<<endl;
+            bed_avail = 1;
+        }
+        else if(bed_num == 100){
+            cout<<"Sorry all beds are occupied"<<endl;
+            bed_avail = 0;
+        }
+        else{
+            cout<<"System error..."<<endl<<"Sorry for the inconveniece"<<endl;
+            bed_avail = 2;
+        }
+    }
+
 };
 
 class Medicine{
@@ -42,13 +70,14 @@ class admitForm{
     int age;
     string phone_number;
     string adhaar;
+    char gender;
 
     public:
     void fill_form(){
         cout<<"Give your name: ";
         cin>>name;
 
-        cout<<"Give your age: ";
+        cout<<"State your age: ";
         cin>>age;
 
         cout<<"Give your phone_number: ";
@@ -56,13 +85,49 @@ class admitForm{
 
         cout<<"Give your Adhaar Number: ";
         cin>>adhaar;
+
+        cout<<"State your Gender\n(M-Male, F-Female, O-Others): ";
+        cin>>gender;
+
+        review_form();
     }
 
-    void display_form(){
+    string get_gender(char gen){
+        switch(toupper(gen)){
+            case 'M': return "Male"; break;
+            case 'F': return "Female"; break;
+            default : return "Others....";
+        }
+    }
+
+    void review_form(){
+        char alr = 'x';
+
+        cout<<"Review is your form....\n"<<endl;
+
         cout<<"Your name: "<<name<<endl;
         cout<<"Your age: "<<age<<endl;
+        cout<<"Your gender: "<<get_gender(gender)<<endl;
         cout<<"Your phone number: "<<phone_number<<endl;
         cout<<"Your Adhaar Card: "<<adhaar<<endl;
+        
+        cout<<"Is this alright??\n(Y- yes, N - no) :"<<endl;
+        cin>>alr;
+
+        while('Y' != toupper(alr)){           
+
+            if('N' == toupper(alr)){
+                cout<<"Ok lets try again"<<endl;
+                fill_form();
+                break;
+            }
+            
+            cout<<"Invalid input\n Try Again!!!!\n"<<endl;
+
+            cout<<"Is this alright??\n(Y- yes, N - no) :"<<endl;
+            cin>>alr;
+
+        }
     }
 };
 
