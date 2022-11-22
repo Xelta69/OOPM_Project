@@ -19,7 +19,8 @@ class Reception{
 
     string user_options = "Press 1 - For Patient Admit Details\n"
                           "Press 2 - For Medicine Details\n"
-                          "Press 3 - For Doctor Appointment\n";
+                          "Press 3 - For Doctor Appointment\n"
+                          "Press 4 - Diagnose an issue";
     
     public:
     Reception(){
