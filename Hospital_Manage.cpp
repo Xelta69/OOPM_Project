@@ -73,7 +73,7 @@ class Reception: public Doctors{
         switch(ch){
             case 1: add_doc();break;
             case 2: break;
-            case 3: break;
+            case 3: doc_today();break;
             case 4: break;
             case 5: break;
             case 6: break;
@@ -316,8 +316,33 @@ class Doctors : public Department, protected Reception{
                 
         }
     }
+
+    void get_doc(int var){
+        for(int i = 0; i < doc_list.size(); i++){
+            try{
+                if(var == i%7){
+                    cout<<doc_list[i]<<" "<<doc_list[i+1];
+                }
+            }
+            catch (out_of_range& e){
+                cout<<" ";
+            }
+                
+        }
+    }
+
+    void doc_today(){
+        
+        srand(2);
+        week = rand() % 7;
+
+        get_weekday(week);
+        get_doc(week);
+
+    }
     
     void get_weekday(int week_num){
+
         switch(week_num){
             case 0: cout<< "For Monday: ";break;
             case 1: cout<< "For Tuesday: ";break;
@@ -338,9 +363,9 @@ class Doctors : public Department, protected Reception{
     }
     
     void list_doc(){
-        for(week = 0; week < 7; week++){
-            get_weekday(week);
-            get_doc();
+        for(int var = 0; var < 7; var++){
+            get_weekday(var);
+            get_doc(var);
             cout<<"\n";
         }
     }
