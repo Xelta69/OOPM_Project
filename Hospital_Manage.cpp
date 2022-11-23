@@ -6,24 +6,52 @@
 #include <vector>
 #include <exception>
 #include<cctype>
+#include<stdlib.h>
 
 using namespace std;
 
-class Reception{
+departmentInfo Path("Pathology", 2, 0), Cardio("Cardiology", 4, 1);
+departmentInfo Uro("Urology", 0, 2), Med("Medicine", 3), Opt("Optics", 1, 3);
+departmentInfo Dent("Dentistry", 6, 4), Neu("Neurology", 5, 5);
+
+
+class Reception;
+class Doctors;
+
+class Reception: public Doctors{    
     
-    private:
     string name;
     int age;
-    char choice = 'X';
+    // char choice = 'X';
     int key;
-
-    string user_options = "Press 1 - For Patient Admit Details\n"
-                          "Press 2 - For Medicine Details\n"
-                          "Press 3 - For Doctor Appointment\n"
-                          "Press 4 - Diagnose an issue";
     
-    public:
-    Reception(){
+    protected:
+
+    void exit_sys(void){
+        cout<<"Come Again :)"<<endl;
+        exit(1);
+    }
+
+    char ask_position(){
+
+        int choice = 0;
+        while (choice == 0)
+            cout<<"Are you Customer(Press C) or Hospital Management(Press H)";
+            cin>>choice;
+
+            // if(toupper(choice) != 'C' || toupper(choice) != 'H'){
+            //     cout<<"Wrong Input\nTry Again!\n"<<endl;
+            // }
+
+            // return choice;
+            switch(toupper(choice)){
+                case 'C': cout<<"Thanks for visiting us :)"<<endl;user_op();choice = 1; break;
+                case 'H': cout<<"Thanks for your hardwork :)"<<endl;managment_check();choice = 2; break;
+                default: cout<<"Wrong Input\nTry Again!\n"<<endl;
+            }
+    }
+
+    void greet(){
         time_t t; // t passed as argument in function time()
         struct tm * tt; // decalring variable for localtime()
         time (&t); //passing argument to time()
@@ -35,38 +63,83 @@ class Reception{
             cout<<"Good Evening!!!\nHow may I help you?"<<endl;
         else if(tt->tm_hour < 17 && tt->tm_hour >= 12)
             cout<<"Good Afteroon!!!\nHow may I help you?"<<endl;
+    }
 
-        ask_position();
-        if(toupper(choice) == 'C'){
-            user_info();
+    void manage_op(void){
+        int ch;
+        cout<<manage_options;
+        cin>>ch;
+
+        switch(ch){
+            case 1: add_doc();break;
+            case 2: break;
+            case 3: break;
+            case 4: break;
+            case 5: break;
+            case 6: break;
+            default : cout<<"Wrong input\nTry Again Please!!"<<endl;manage_op();
         }
-        else if(toupper(choice) == 'H')
-            managment();
-
-    }
-    char ask_position(){
-        while (toupper(choice) != 'C' || toupper(choice) != 'H')
-            cout<<"Are you Customer(Press C) or Hospital Management(Press H)";
-            cin>>choice;
-
-            if(toupper(choice) != 'C' || toupper(choice) != 'H'){
-                cout<<"Wrong Input\nTry Again!\n"<<endl;
-            } 
     }
 
-    int managment(){
+    int managment_check(){
         int pass;
-        cout<<"Give Pin: ";
+        cout<<"Give PIN: ";
         cin>>pass;
 
-        // if()
+        if(pass == key){
+            manage_op();
+        }
+        else{
+            char yes;
+            cout<<"Wrong PIN\nWant to try again (Yes - Y) ?";
+            cin>>yes;
+            if(toupper(yes) == 'Y'){
+                ask_position();
+            }
+            else {
+                exit_sys();
+            }
+        }
 
     }
 
-    void user_info(){
 
-    }
+    string user_options = "* * * * * * * * * * * * * * * * * * *\n"
+                          "Press 1 - For Patient Admit Details\n"
+                          "Press 2 - For Medicine Details\n"
+                          "Press 3 - For Doctor Appointment\n"
+                          "Press 4 - Diagnose an issue\n"
+                          "Press 5 - Exit...\n"
+                          "* * * * * * * * * * * * * * * * * * *\n";
+
+    string manage_options = "* * * * * * * * * * * * * * * * * * *\n"
+                            "Press 1 - For Registering New Doctor\n"
+                            "Press 2 - For Registering New Medicines\n"
+                            "Press 3 - Get List of Doctors Available Today\n"
+                            "Press 4 - Information on Beds available\n"
+                            "Press 5 - Punch the employee attendance\n"
+                            "Press 6 - Exit...\n"
+                            "* * * * * * * * * * * * * * * * * * *\n";
     
+    public:
+    Reception(){
+
+        greet();
+        ask_position();
+
+    //     if(toupper() == 'C'){
+    //         user();
+    //     }
+    //     else if(toupper(ask_position()) == 'H')
+    //         managment_check();
+
+    }
+
+    void user_op(){
+
+    }
+
+    // friend class Doctors;    
 };
 
 class Bed{
@@ -120,7 +193,14 @@ class departmentInfo{
     string name;
     vector <int> doc_IDs;
     vector <int> med_IDs;
-    
+    string department_selec = "Press 1 - Pathology\n"
+                              "Press 2 - Cardiology\n"
+                              "Press 3 - Urology\n"
+                              "Press 4 - Medicine\n"
+                              "Press 5 - Optics\n"
+                              "Press 6 - Dentistry\n"
+                              "Press 7 - Neurology\n";
+                              
     public:
     departmentInfo(){ }
     departmentInfo(string dep_name, int doc, int med){
@@ -141,6 +221,8 @@ class Department : public departmentInfo{
         departmentInfo Uro("Urology", 0, 2), Med("Medicine", 3), Opt("Optics", 1, 3);
         departmentInfo Dent("Dentistry", 6, 4), Neu("Neurology", 5, 5);
     }
+
+    
 };
 
 class admitForm{
@@ -210,16 +292,16 @@ class admitForm{
     }
 };
 
-class Doctors{
+class Doctors : public Department, protected Reception{
+    friend class Reception;
 
     vector <string> doc_list {"Dr.Ahuja","Dr.Singh","Dr.Patel",
                             "Dr.Khan", "Dr.Saxena","Dr.Nagraj",
                             "Dr.Gulati"};
-    // int i = 7;
+    int doc_num = 6;
     int week ;
     
-    protected:
-    
+    protected:  
     
     void get_doc(){
         for(int i = 0; i < doc_list.size(); i++){
@@ -264,7 +346,32 @@ class Doctors{
     }
     void add_doc(string S){
         doc_list.push_back(S);
+        doc_num++;
     }
+    void add_doc(void){
+        string doc;
+        int selec;
+        cout<<"What is the name of Doctor?";
+        cin>>doc;
+
+        doc_list.push_back(doc);
+        doc_num++;
+
+        cout<<"What Department he specializes in ?"<<endl<<department_selec;
+        cin>>selec;
+        switch(selec){
+            case 1: Path.doc_ID.push_back(doc_num);break;
+            case 2: Cardio.doc_ID.push_back(doc_num);break;
+            case 3: Uro.doc_ID.push_back(doc_num);break;
+            case 4: Med.doc_ID.push_back(doc_num);break;
+            case 5: Opt.doc_ID.push_back(doc_num);break;
+            case 6: Dent.doc_ID.push_back(doc_num);break;
+            case 7: Neu.doc_ID.push_back(doc_num);break;
+            default: cout<<"Invalid input...\nTRY AGAIN!!!!"<<endl;manage_op();
+        }
+        // cout<<;
+    }
+    
 };
 
 int main() {
