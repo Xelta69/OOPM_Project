@@ -14,23 +14,24 @@ departmentInfo Path("Pathology", 2, 0), Cardio("Cardiology", 4, 1);
 departmentInfo Uro("Urology", 0, 2), Med("Medicine", 3), Opt("Optics", 1, 3);
 departmentInfo Dent("Dentistry", 6, 4), Neu("Neurology", 5, 5);
 
+void exit_sys(void){
+        cout<<"Come Again :)"<<endl;
+        exit(1);
+    }
+
 
 class Reception;
 class Doctors;
 
-class Reception: public Doctors{    
+class Reception: public Doctors, public Bed, protected Medicine{    
     
     string name;
     int age;
     // char choice = 'X';
     int key;
+    char CorH;
     
     protected:
-
-    void exit_sys(void){
-        cout<<"Come Again :)"<<endl;
-        exit(1);
-    }
 
     char ask_position(){
 
@@ -45,8 +46,8 @@ class Reception: public Doctors{
 
             // return choice;
             switch(toupper(choice)){
-                case 'C': cout<<"Thanks for visiting us :)"<<endl;user_op();choice = 1; break;
-                case 'H': cout<<"Thanks for your hardwork :)"<<endl;managment_check();choice = 2; break;
+                case 'C': cout<<"Thanks for visiting us :)"<<endl;user_op();choice = 1; return choice; break;
+                case 'H': cout<<"Thanks for your hardwork :)"<<endl;managment_check();choice = 2; return choice; break;
                 default: cout<<"Wrong Input\nTry Again!\n"<<endl;
             }
     }
@@ -71,12 +72,12 @@ class Reception: public Doctors{
         cin>>ch;
 
         switch(ch){
-            case 1: add_doc();break;
-            case 2: break;
-            case 3: doc_today();break;
-            case 4: break;
-            case 5: break;
-            case 6: break;
+            case 1: add_doc();manage_op();break;
+            case 2: add_med();manage_op();break;
+            case 3: doc_today();manage_op();break;
+            case 4: bed_status(CorH);manage_op();break;
+            case 5: cout<<"Okay your attendance for today has been marked"<<endl;break;
+            case 6: exit_sys();break;
             default : cout<<"Wrong input\nTry Again Please!!"<<endl;manage_op();
         }
     }
@@ -125,7 +126,7 @@ class Reception: public Doctors{
     Reception(){
 
         greet();
-        ask_position();
+        CorH = ask_position();
 
     //     if(toupper() == 'C'){
     //         user();
@@ -152,40 +153,94 @@ class Bed{
         bed_num = rand() % (100 + 1);
     }
 
-    void bed_status(){
-        if(bed_num > 0 && bed_num < 50){
-            cout<<"Many beds are available."<<endl;
-            bed_avail = 1;
+    void bed_status(char x){
+
+        srand(5);
+        bed_num = rand() % (100 + 1);
+
+        if(toupper(x) == 'C'){
+
+            if(bed_num > 0 && bed_num < 50){
+                cout<<"Many beds are available."<<endl;
+                bed_avail = 1;
+            }
+            else if(bed_num >= 50 && bed_num < 100){
+                cout<<"Few beds are available."<<endl;
+                bed_avail = 1;
+            }
+            else if(bed_num == 100){
+                cout<<"Sorry all beds are occupied"<<endl;
+                bed_avail = 0;
+            }
+            else{
+                cout<<"System error..."<<endl<<"Sorry for the inconveniece"<<endl;
+                // user_op();
+                bed_avail = 2;
+            }
         }
-        else if(bed_num >= 50 && bed_num < 100){
-            cout<<"Few beds are available."<<endl;
-            bed_avail = 1;
-        }
-        else if(bed_num == 100){
-            cout<<"Sorry all beds are occupied"<<endl;
-            bed_avail = 0;
-        }
-        else{
-            cout<<"System error..."<<endl<<"Sorry for the inconveniece"<<endl;
-            bed_avail = 2;
+        else if(toupper(x) == 'H'){
+
+            if(bed_num > 0 && bed_num < 100){
+                cout<<bed_num<<" beds are available."<<endl;
+                bed_avail = 1;
+            }
+            else if(bed_num == 100){
+                cout<<"All beds are occupied"<<endl;
+                bed_avail = 0;
+            }
+            else{
+                cout<<"System error..."<<endl<<"Sorry for the inconveniece\n"<<endl;
+                // manage_op();
+                bed_avail = 2;
+            }            
         }
     }
 
 };
 
 class medicineInfo{
-    vector<string> name = {"Forte Tablets", "Aspirin", "Ditropan XL", "Eytazox",
+    protected:
+    vector<string> med_list = {"Forte Tablets", "Aspirin", "Ditropan XL", "Eytazox",
                             "Motrin", "Exelon"};
+    int med_num = 5;
 
     public:
     medicineInfo(){   }
 };
 
-class Medicine: public medicineInfo{
+class Medicine: protected medicineInfo, protected departmentInfo{    
+    protected:
+    void add_med(void){
+        string med;
+        int selec;
+
+        cout<<"What is the name of the Medicine?";
+        cin>>med;
+
+        med_list.push_back(med);
+        med_num++;
+
+        cout<<"For what body part is the medicine for?"<<endl<<part_selec;
+        cin>>selec;
+
+        switch(selec){
+            case 1: Path.med_ID.push_back(med_num);break;
+            case 2: Cardio.med_ID.push_back(med_num);break;
+            case 3: Uro.med_ID.push_back(med_num);break;
+            case 4: Med.med_ID.push_back(med_num);break;
+            case 5: Opt.med_ID.push_back(med_num);break;
+            case 6: Dent.meddoc_ID.push_back(med_num);break;
+            case 7: Neu.med_ID.push_back(med_num);break;
+            default: cout<<"Invalid input...\nTRY AGAIN!!!!"<<endl;
+        }
+
+    }
+
     public:
     Medicine(){
-        // medicineInfo path_1()
+        // medicineInfo path_1()        
     }
+    
 };
 
 class departmentInfo{
@@ -200,6 +255,13 @@ class departmentInfo{
                               "Press 5 - Optics\n"
                               "Press 6 - Dentistry\n"
                               "Press 7 - Neurology\n";
+
+    string part_selec = "Press 1 - Bones and Joints\n"
+                        "Press 2 - Heart\n"
+                        "Press 3 - Urinary System\n"
+                        "Press 4 - Eyes\n"
+                        "Press 5 - Teeth\n"
+                        "Press 6 - Brain\n";
                               
     public:
     departmentInfo(){ }
@@ -369,9 +431,20 @@ class Doctors : public Department, protected Reception{
             cout<<"\n";
         }
     }
-    void add_doc(string S){
-        doc_list.push_back(S);
+    void add_doc(string doc, int selec){
+        doc_list.push_back(doc);
         doc_num++;
+
+        switch(selec){
+            case 1: Path.doc_ID.push_back(doc_num);break;
+            case 2: Cardio.doc_ID.push_back(doc_num);break;
+            case 3: Uro.doc_ID.push_back(doc_num);break;
+            case 4: Med.doc_ID.push_back(doc_num);break;
+            case 5: Opt.doc_ID.push_back(doc_num);break;
+            case 6: Dent.doc_ID.push_back(doc_num);break;
+            case 7: Neu.doc_ID.push_back(doc_num);break;
+            default: cout<<"Invalid input...\nTRY AGAIN!!!!"<<endl;manage_op();
+        }
     }
     void add_doc(void){
         string doc;
