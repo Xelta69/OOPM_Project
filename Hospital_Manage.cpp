@@ -171,7 +171,8 @@ class Bed{
             cout<<"Do you want to go back to the Option Panel??\n(Y - Yes): ";
             cin>>x;
             
-            if(toupper(x) == 'Y')
+            if(toupper(x) == 'Y'){
+                    
         }
     }
     public:
