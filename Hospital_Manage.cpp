@@ -82,9 +82,24 @@ class Reception: public Doctors, public Bed, protected Medicine{
         }
     }
 
+    void user_op(void){
+        int ch;
+        cout<<user_options;
+        cin>>ch;
+
+        switch(ch){
+            case 1: add_doc();manage_op();break;
+            case 2: add_med();manage_op();break;
+            case 3: doc_today();manage_op();break;
+            case 4: bed_status(CorH);manage_op();break;
+            case 5: exit_sys();break;
+            default : cout<<"Wrong input\nTry Again Please!!"<<endl;manage_op();
+        }        
+    }
+
     int managment_check(){
         int pass;
-        cout<<"Give PIN: ";
+        cout<<"Enter PIN: ";
         cin>>pass;
 
         if(pass == key){
@@ -101,7 +116,6 @@ class Reception: public Doctors, public Bed, protected Medicine{
                 exit_sys();
             }
         }
-
     }
 
 
@@ -136,9 +150,6 @@ class Reception: public Doctors, public Bed, protected Medicine{
 
     }
 
-    void user_op(){
-
-    }
 
     // friend class Doctors;    
 };
@@ -146,6 +157,23 @@ class Reception: public Doctors, public Bed, protected Medicine{
 class Bed{
     int bed_num;
     int bed_avail;
+
+    protected:
+
+    void check_bed(char C){
+        char x;
+        bed_status(C);
+        if(bed_avail == 1){
+            cout<<"Do you want to book Bed?\n(Y - Yes): ";
+            cin>>x;
+        }
+        else if(bed_avail = 0){
+            cout<<"Do you want to go back to the Option Panel??\n(Y - Yes): ";
+            cin>>x;
+            
+            if(toupper(x) == 'Y')
+        }
+    }
     public:
     
     Bed(void){
