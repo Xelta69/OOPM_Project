@@ -75,6 +75,8 @@ class medicineInfo{
     protected:
     vector<string> med_list = {"Forte Tablets", "Aspirin", "Ditropan XL", "Avelumab"
                                "Eytazox", "Motrin", "Exelon"};
+
+    vector <int> price_list = {152, 324, 501, 120, 254, 145, 466};
     int med_num = 5;
 
     public:
@@ -233,11 +235,53 @@ class Bed: admitForm{
 };
 
 
-class Medicine: protected medicineInfo{    
+class Medicine: protected medicineInfo{
+
+    string option = "Press 1 - Price & List of Available Medicines\n"
+                    "Press 2 - Take Medicine according to problem\n"
+                    "Press 3 - Go back to last panel\n"
+                    "Press 4 - Exit.....\n";
     protected:
+
+    void med_op(void){
+        int x;
+        cout<<option<<endl;
+        cout<<"Give your choice: ";
+        cin>>x;
+
+        switch(x){
+            case 1: get_med_list();return;break;
+            case 2: sug_med();return;break;
+            case 3: return;break;
+            case 4: exit_sys(); return; break;
+            default: cout<<"Wrong input\nTry Again Please!!"<<endl;med_op();
+        }
+    }
+
+    void sug_med(void){
+
+        int x;
+
+        cout<<part_selec;
+        cout<<"What body part has problem?? ";
+        cin>>x;
+
+        for(int i = 0; i < med_num; i++){
+            if(i == x){
+                cout<<"Medicine Prescribed is: "<<med_list[i];
+                // break;
+                return;
+            }
+        }
+
+        cout<<"Wrong Input"<<endl;
+        sug_med();
+    }
+
     void add_med(void){
         string med;
         int selec;
+        int price;
 
         cout<<"What is the name of the Medicine?";
         cin>>med;
@@ -259,6 +303,16 @@ class Medicine: protected medicineInfo{
             default: cout<<"Invalid input...\nTRY AGAIN!!!!"<<endl;
         }
 
+        cout<<"What is the price of the Medicine? ";
+        cin>>price;
+
+        price_list.push_back(price);
+    }
+
+    void get_med_list(void){
+        for(int i = 0; i < med_num; i++){
+            cout<<"Medicine "<<med_list[i]<<" priced Rs."<<price_list[i]<<endl;
+        }
     }
 
     public:
@@ -314,6 +368,37 @@ class Doctors{
 
         get_weekday(week);
         get_doc(week);
+
+    }
+
+    void book_doc(void){
+
+        int x;
+        int range = 0;
+
+        try{
+            cout<<"Do you want an appointment with\n"<<doc_list[doc_num];
+            cout<<" - Press 1.\n"<<doc_list[doc_num+1];
+        }
+        catch(out_of_range& e){
+            range = 1;
+        }
+        if(range == 0){
+            cout<<" - Press 2.\n";
+        }
+
+        cout<<"Enter choice: ";
+        cin>>x;
+
+        if(range == 0 && x == 2){
+            
+        }
+
+        switch(x){
+            case 1: cout<<"Appointment booked with "<<doc_list[doc_num];
+            case 2: cout<<"Appointment booked with "
+        }
+
 
     }
     
@@ -469,7 +554,7 @@ class Reception: public Doctors, public Bed, protected Medicine{
 
         switch(ch){
             case 1: check_bed(CorH);user_op();break;
-            case 2: add_med();user_op();break;
+            case 2: med_op();user_op();break;
             case 3: doc_today();user_op();break;
             case 4: bed_status(CorH);user_op();break;
             case 5: exit_sys();break;
