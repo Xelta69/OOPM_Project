@@ -83,16 +83,26 @@ class medicineInfo{
     medicineInfo(){   }
 };
 
-class admitForm{
+class Form{
 
+    private:
     string name;
     int age;
     string phone_number;
     string adhaar;
     char gender;
 
-    public:
-    void fill_form(){
+    string dia_op = "Press 1 - Blood Test\n"
+                    "Press 2 - Eye Test\n"
+                    "Press 3 - CT Scan\n"
+                    "Press 4 - X-ray Test\n"
+                    "Press 5 - Ultra Sound\n"
+                    "Press 6 - MRI Scan\n"
+                    "Press 7 - Go Back..........\n";
+
+    protected:
+
+    void fill_form(void){
         cout<<"Give your name: ";
         cin>>name;
 
@@ -121,7 +131,7 @@ class admitForm{
         }
     }
 
-    void review_form(){
+    void review_form(void){
         char alr = 'x';
 
         cout<<"Review is your form....\n"<<endl;
@@ -152,9 +162,20 @@ class admitForm{
 
         }
     }
+
+    void test_form(void){
+        
+        int x;
+
+        cout<<dia_op<<endl;
+        cout<<"Enter your Choice: ";
+        cin>>x;
+
+        fill_form();
+    }
 };
 
-class Bed: admitForm{
+class Bed: protected Form{
     int bed_num;
     int bed_avail;
 
@@ -233,7 +254,6 @@ class Bed: admitForm{
     }
 
 };
-
 
 class Medicine: protected medicineInfo{
 
@@ -391,15 +411,14 @@ class Doctors{
         cin>>x;
 
         if(range == 0 && x == 2){
-            
+            x = 0;
         }
 
         switch(x){
-            case 1: cout<<"Appointment booked with "<<doc_list[doc_num];
-            case 2: cout<<"Appointment booked with "
+            case 1: cout<<"Appointment booked with "<<doc_list[doc_num];break;
+            case 2: cout<<"Appointment booked with "<<doc_list[doc_num+1];break;
+            default: cout<<"We see that you do not want an appointment ._.\n"<<endl;break;
         }
-
-
     }
     
     void get_weekday(int week_num){
@@ -478,6 +497,26 @@ class Reception: public Doctors, public Bed, protected Medicine{
     // char choice = 'X';
     int key = 6969;
     char CorH;
+
+    string user_options = "* * * * * * * * * * * * * * * * * * *\n"
+                          "Press 1 - For Patient Admit Details\n"
+                          "Press 2 - For Medicine Details\n"
+                          "Press 3 - For Doctor Appointment\n"
+                          "Press 4 - Diagnose an issue\n"
+                          "Press 5 - Go back to Previous Panels\n"
+                          "Press 6 - Exit...\n"
+                          "* * * * * * * * * * * * * * * * * * *\n";
+
+    string manage_options = "* * * * * * * * * * * * * * * * * * *\n"
+                            "Press 1 - For Registering New Doctor\n"
+                            "Press 2 - For Registering New Medicines\n"
+                            "Press 3 - Get List of Doctors Available Today\n"
+                            "Press 4 - Information on Beds available\n"
+                            "Press 5 - Punch the employee attendance\n"
+                            "Press 6 - Go back to previous panel\n"
+                            "Press 7 - Exit...\n"
+                            "* * * * * * * * * * * * * * * * * * *\n";
+
     
     protected:
 
@@ -555,9 +594,10 @@ class Reception: public Doctors, public Bed, protected Medicine{
         switch(ch){
             case 1: check_bed(CorH);user_op();break;
             case 2: med_op();user_op();break;
-            case 3: doc_today();user_op();break;
-            case 4: bed_status(CorH);user_op();break;
-            case 5: exit_sys();break;
+            case 3: doc_today();book_doc();user_op();break;
+            case 4: test_form();user_op();break;
+            case 5: ask_position();break;
+            case 6: exit_sys();break;
             default : cout<<"Wrong input\nTry Again Please!!"<<endl;user_op();
         }        
     }
@@ -583,30 +623,15 @@ class Reception: public Doctors, public Bed, protected Medicine{
         }
     }
 
-
-    string user_options = "* * * * * * * * * * * * * * * * * * *\n"
-                          "Press 1 - For Patient Admit Details\n"
-                          "Press 2 - For Medicine Details\n"
-                          "Press 3 - For Doctor Appointment\n"
-                          "Press 4 - Diagnose an issue\n"
-                          "Press 5 - Exit...\n"
-                          "* * * * * * * * * * * * * * * * * * *\n";
-
-    string manage_options = "* * * * * * * * * * * * * * * * * * *\n"
-                            "Press 1 - For Registering New Doctor\n"
-                            "Press 2 - For Registering New Medicines\n"
-                            "Press 3 - Get List of Doctors Available Today\n"
-                            "Press 4 - Information on Beds available\n"
-                            "Press 5 - Punch the employee attendance\n"
-                            "Press 6 - Go back to previous panel\n"
-                            "Press 7 - Exit...\n"
-                            "* * * * * * * * * * * * * * * * * * *\n";
+    void diagnose(void){
+    }
     
     public:
     Reception(){
 
         greet();
         CorH = ask_position();
+
 
     //     if(toupper() == 'C'){
     //         user();
