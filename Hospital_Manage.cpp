@@ -77,7 +77,7 @@ class medicineInfo{
                                "Eytazox", "Motrin", "Exelon"};
 
     vector <int> price_list = {152, 324, 501, 120, 254, 145, 466};
-    int med_num = 5;
+    int med_num = 6;
 
     public:
     medicineInfo(){   }
@@ -134,7 +134,7 @@ class Form{
     void review_form(void){
         char alr = 'x';
 
-        cout<<"Review is your form....\n"<<endl;
+        cout<<"Review for your form....\n"<<endl;
 
         cout<<"Your name: "<<name<<endl;
         cout<<"Your age: "<<age<<endl;
@@ -288,7 +288,7 @@ class Medicine: protected medicineInfo{
 
         for(int i = 0; i < med_num; i++){
             if(i == x){
-                cout<<"Medicine Prescribed is: "<<med_list[i];
+                cout<<"Medicine Prescribed is: "<<med_list[i]<<endl;
                 // break;
                 return;
             }
@@ -330,7 +330,7 @@ class Medicine: protected medicineInfo{
     }
 
     void get_med_list(void){
-        for(int i = 0; i < med_num; i++){
+        for(int i = 0; i < (med_num+1); i++){
             cout<<"Medicine "<<med_list[i]<<" priced Rs."<<price_list[i]<<endl;
         }
     }
