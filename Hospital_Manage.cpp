@@ -30,18 +30,7 @@ struct departmentInfo{
     // protected:
     string name;
     vector <int> doc_ID;
-    vector <int> med_ID;                             
-    // public:
-    // departmentInfo(){ }
-    // de  name = dep_name;
-    //     doc_IDs.push_back(doc);
-    //     med_IDs.push_back(med);
-    // }
-    // departmentInfo(string dep_name, int doc){
-    //     name = dep_name;
-    //     doc_IDs.push_back(doc);
-    // }partmentInfo(string dep_name, int doc, int med){
-      
+    vector <int> med_ID;                     
 };
 
 departmentInfo Path = {"Pathology", {2}, {0}};
@@ -64,12 +53,6 @@ void exit_sys(void){
         cout<<"Come Again :)"<<endl;
         exit(1);
     }
-
-
-// class Reception{};
-// class Doctors{};
-// class Bed{};
-// class Medicine{};
 
 class medicineInfo{
     protected:
@@ -150,16 +133,10 @@ class Form{
             if('N' == toupper(alr)){
                 cout<<"Ok lets try again"<<endl;
                 fill_form();
-                // cout<<"Is this alright??\n(Y- yes, N - no) :"<<endl;
-                // cin>>alr;
                 break;
             }
             
             cout<<"Invalid input\n Try Again!!!!\n"<<endl;
-
-            // cout<<"Is this alright??\n(Y- yes, N - no) :"<<endl;
-            // cin>>alr;
-
         }
     }
 
@@ -252,7 +229,6 @@ class Bed: protected Form{
             }            
         }
     }
-
 };
 
 class Medicine: protected medicineInfo{
@@ -308,19 +284,23 @@ class Medicine: protected medicineInfo{
 
         med_list.push_back(med);
         med_num++;
+        
+        int i = 0;
+        while(i == 0){
 
-        cout<<"For what body part is the medicine for?"<<endl<<part_selec;
-        cin>>selec;
-
-        switch(selec){
-            case 1: p->med_ID.push_back(med_num);break;
-            case 2: c->med_ID.push_back(med_num);break;
-            case 3: u->med_ID.push_back(med_num);break;
-            case 4: dm->med_ID.push_back(med_num);break;
-            case 5: o->med_ID.push_back(med_num);break;
-            case 6: dn->med_ID.push_back(med_num);break;
-            case 7: n->med_ID.push_back(med_num);break;
-            default: cout<<"Invalid input...\nTRY AGAIN!!!!"<<endl;
+            cout<<"For what body part is the medicine for?"<<endl<<part_selec;
+            cin>>selec;
+    
+            switch(selec){
+                case 1: p->med_ID.push_back(med_num);i = 1;break;
+                case 2: c->med_ID.push_back(med_num);i = 1;break;
+                case 3: u->med_ID.push_back(med_num);i = 1;break;
+                case 4: dm->med_ID.push_back(med_num);i = 1;break;
+                case 5: o->med_ID.push_back(med_num);i = 1;break;
+                case 6: dn->med_ID.push_back(med_num);i = 1;break;
+                case 7: n->med_ID.push_back(med_num);i = 1;break;
+                default: cout<<"Invalid input...\nTRY AGAIN!!!!"<<endl;
+            }
         }
 
         cout<<"What is the price of the Medicine? ";
@@ -336,14 +316,9 @@ class Medicine: protected medicineInfo{
     }
 
     public:
-    Medicine(){
-        // medicineInfo path_1()        
-    }
-    
 };
 
 class Doctors{
-    // friend class Reception;
 
     vector <string> doc_list {"Dr.Ahuja","Dr.Singh","Dr.Patel",
                             "Dr.Khan", "Dr.Saxena","Dr.Nagraj",
@@ -485,9 +460,7 @@ class Doctors{
             case 7: n->doc_ID.push_back(doc_num); return; break;
             default: cout<<"Invalid input...\nTRY AGAIN!!!!"<<endl;
         }
-        // cout<<;
     }
-    
 };
 
 class Reception: public Doctors, public Bed, protected Medicine{    
@@ -529,13 +502,7 @@ class Reception: public Doctors, public Bed, protected Medicine{
         cin>>choice;
 
         while (var == 0){
-            
 
-            // if(toupper(choice) != 'C' || toupper(choice) != 'H'){
-            //     cout<<"Wrong Input\nTry Again!\n"<<endl;
-            // }
-
-            // return choice;
             switch(toupper(choice)){
                 case 'C': cout<<"Thanks for visiting us :)"<<endl;CorH = 'C';user_op();var = 1; return choice; break;
                 case 'H': cout<<"Thanks for your hardwork :)"<<endl;CorH = 'H';managment_check();var = 2; return choice; break;
@@ -561,13 +528,6 @@ class Reception: public Doctors, public Bed, protected Medicine{
         else cout<<"Good Evening!!!\nHow may I help you?"<<endl;
     }
 
-    // void greet(){
-    //     time_t t; // t passed as argument in function time()
-    //     struct tm * tt; // decalring variable for localtime()
-    //     time (&t); //passing argument to time()
-    //     tt = localtime(&t);
-    //     cout<<"HEY!!!!!"<<endl<<tt->tm_hour<<endl;
-    // }
     void manage_op(void){
         int ch;
         cout<<manage_options;
@@ -631,42 +591,11 @@ class Reception: public Doctors, public Bed, protected Medicine{
 
         greet();
         CorH = ask_position();
-
-
-    //     if(toupper() == 'C'){
-    //         user();
-    //     }
-    //     else if(toupper(ask_position()) == 'H')
-    //         managment_check();
-
     }
-
-
-    // friend class Doctors;    
 };
 
-
-
-// class Department{
-//     public:
-//     Department(){
-//         // departmentInfo Path("Pathology", 2, 0), Cardio("Cardiology", 4, 1);
-//         // departmentInfo Uro("Urology", 0, 2), Med("Medicine", 3), Opt("Optics", 1, 3);
-//         // departmentInfo Dent("Dentistry", 6, 4), Neu("Neurology", 5, 5);
-//     }
-
-    
-// };
-
-
-
-
 int main() {
-    // Doctors db;
-    // db.list_doc();
-
     Reception R;
-
 
     return 0;
 }
